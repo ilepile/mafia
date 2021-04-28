@@ -3,7 +3,8 @@ import * as path from 'path';
 import * as http from 'http';
 import * as bodyParser from 'body-parser';
 import { BackendApi } from './routes/backendapi';
-import cors from 'cors'; 
+import cors from 'cors';  
+
 
 class Server {
     public app = express();
@@ -35,6 +36,7 @@ class Server {
 
         // Point static path to dist
         this.app.use(express.static(path.join(__dirname, 'public')));
+      
 
         /**
          * Get port from environment and store in Express.
@@ -65,16 +67,16 @@ class Server {
         // test API
         router.get('/api/test', api.test.bind(api.test));
 
-        //router.post('/api/createUser', api.creteUser.bind(api.creteUser))
+        router.post('/api/createUser', api.creteUser.bind(api.creteUser))
 
 
         // use router middleware
         this.app.use(router);
 
         // Catch all other routes and return the index file
-        this.app.get('*', (req:any, res:any) => {
-            res.sendFile(path.join(__dirname, 'public/index.html'));
-        });
+        // this.app.get('*', (req:any, res:any) => {
+        //     res.sendFile(path.join(__dirname, 'public/index.html'));
+        // });
 
 
     }

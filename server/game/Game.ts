@@ -1,34 +1,51 @@
 import { exception } from 'console';
 import { Role } from '../models/roles';
 import { User } from '../models/user';
-import { HelperMethods } from './helpers';
+import { HelperMethods } from './helpers'; 
 
 export class Game {
-
   public users: Array<User> = [];
   private helpers: HelperMethods = new HelperMethods();
 
-  public creteUser(user: User, users: Array<User>) {
+  constructor() { 
+    this.users = []
+  } 
+
+  load() : Game{
+    let game =  localStorage.getItem('game');
+    if(game == null){
+      let g = new Game()
+      localStorage.setItem('game' , JSON.stringify(g))
+      return g;
+    }
+    return JSON.parse(game)
+  }
+
+  save(game: Game){
+    localStorage.setItem('game', JSON.stringify(game))
+  }
+
+  public creteUser(user: User) {
 
     if (this.helpers.checkForValidUserData(user)) {
 
       let role: number;
 
-      if (users.length == 0) { // nemame nikoj
+      if (this.users.length == 0) { // nemame nikoj
 
         role = this.helpers.getRandom(2);
 
       }
-      else if (users.length < 5) { // ima mesto za poveke clenovi
+      else if (this.users.length < 5) { // ima mesto za poveke clenovi
 
-        if (users.filter(u => u.role == Role.killer).length > 0) { //imame kiler
+        if (this.users.filter(u => u.role == Role.killer).length > 0) { //imame kiler
 
           role = Role.civilian;
 
         }
         else { //nemame kiler
 
-          if (users.filter(u => u.role == Role.civilian).length == 4) {
+          if (this.users.filter(u => u.role == Role.civilian).length == 4) {
             role = Role.killer;
           }
           else {
@@ -38,14 +55,15 @@ export class Game {
       }
 
 
-      user.role = role;
-      users.push(user);
+      //user.role = role;
+      this.users.push(user);
+      
 
     }
     else{
       throw(exception("User has invalid data!!"))
     }
-
+    this.save(this);
   }
 
 

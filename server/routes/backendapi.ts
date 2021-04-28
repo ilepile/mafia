@@ -2,25 +2,30 @@ import { exception } from 'console';
 import * as express from 'express';
 import { User } from '../models/user';
 import { Game } from '../Game/Game';
+import { LocalStorage } from "node-localstorage";
 
 export class BackendApi {
-
-  //public game: Game = new Game();
+ 
 
   public test(req: express.Request, res: express.Response) {
-    res.json('Hello World');
+    res.json('Hello Bitchessss');
   }
 
-  public creteUser(req: User, res: Array<User>) {
-
-    // if(this.game.users.length == 5)
-    // {
-    //   throw(exception("Maximum users are created already!!"))
-    // }
-
-    // this.game.creteUser(req,res);
-    // //res = this.game.users;
+  public creteUser(req: express.Request, res: express.Response) {
+     
+    try {
+      let user:User = <User>req.body;
+      
+    let game = new Game().load(); 
+    game.creteUser(user);
+    res.json(game.users)
+    } catch (error) {
+      throw error;
+    }
+    
 
   }
+
+  
 }
 

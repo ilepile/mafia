@@ -8,12 +8,12 @@
     First Name:
     <input type="text" formControlName="firstName">
   </label>
+  <br/>
 
   <label>
     Last Name:
     <input type="text" formControlName="lastName">
-  </label>
-
+  </label><br/>
   <label>
     User Name:
     <input type="text" formControlName="userName">
@@ -22,3 +22,5 @@
   <button (click)="submit()">Submit</button>
 
 </form>
+
+<label>{{createdUser?.firstName}}</label>

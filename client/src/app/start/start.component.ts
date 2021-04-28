@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component,  OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { User } from '../models/user';
@@ -10,7 +11,7 @@ import { User } from '../models/user';
 export class StartComponent implements OnInit {
 
   users: Array<User> = [];
-
+  createdUser: User;
 
   profileForm = this.fb.group({
     firstName: [''],
@@ -19,13 +20,17 @@ export class StartComponent implements OnInit {
   });
 
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder,private httpClient: HttpClient) { }
 
   ngOnInit(): void {
   }
 
   submit(){
 
-      console.log("ustpeads asd ")
+    let user= this.profileForm.value;
+      this.httpClient.post('http://localhost:3000/api/createUser',
+      user).subscribe(data=>{
+        this.users = <Array<User>>data;
+      })
   }
 }
