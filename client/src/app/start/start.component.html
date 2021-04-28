@@ -1,0 +1,24 @@
+<p>
+ Welcome to Mafia
+</p>
+
+<form [formGroup]="profileForm">
+
+  <label>
+    First Name:
+    <input type="text" formControlName="firstName">
+  </label>
+
+  <label>
+    Last Name:
+    <input type="text" formControlName="lastName">
+  </label>
+
+  <label>
+    User Name:
+    <input type="text" formControlName="userName">
+  </label>
+
+  <button (click)="submit()">Submit</button>
+
+</form>
