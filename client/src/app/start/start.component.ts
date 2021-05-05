@@ -10,7 +10,7 @@ import { User } from '../models/user';
 })
 export class StartComponent implements OnInit {
 
-  users: Array<User> = [];
+  game: any  = {};
   createdUser: User;
 
   profileForm = this.fb.group({
@@ -30,7 +30,7 @@ export class StartComponent implements OnInit {
     let user= this.profileForm.value;
       this.httpClient.post('http://localhost:3000/api/createUser',
       user).subscribe(data=>{
-        this.users = <Array<User>>data;
+        this.game =  data;
       })
   }
 }

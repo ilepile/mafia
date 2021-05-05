@@ -23,4 +23,10 @@
 
 </form>
 
-<label>{{createdUser?.firstName}}</label>
+<table>
+  <tr *ngFor="let user of game.users">
+    <td>User Name : {{user.userName}}</td>   
+    <td>Name : {{user.firstName}} {{user.lastName}}</td>
+
+  </tr>
+</table> 
