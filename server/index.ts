@@ -2,8 +2,11 @@ import express from 'express';
 import * as path from 'path';
 import * as http from 'http';
 import * as bodyParser from 'body-parser';
+import * as WebSocket from 'ws';
 import { BackendApi } from './routes/backendapi';
-import cors from 'cors';  
+import cors from 'cors';
+import { LocalStorage } from "node-localstorage";
+import { Game } from './Game/Game';
 
 
 class Server {
@@ -14,10 +17,10 @@ class Server {
         return new Server();
     }
 
-    constructor() { 
- 
+    constructor() {
+
         this.app.use(cors({
-          origin:['http://localhost:4200']
+            origin: ['http://localhost:4200']
         }));
 
 
@@ -36,7 +39,7 @@ class Server {
 
         // Point static path to dist
         this.app.use(express.static(path.join(__dirname, 'public')));
-      
+
 
         /**
          * Get port from environment and store in Express.
@@ -48,6 +51,25 @@ class Server {
          * Create HTTP server.
          */
         const server = http.createServer(this.app);
+
+
+        const wss = new WebSocket.Server({ server });
+        wss.on('connection', (ws: WebSocket) => {
+            //connection is up, let's add a simple simple event
+            ws.on('message', (message: string) => {
+                        console.log('message arrived')
+                let localStorage: LocalStorage = new LocalStorage('../');
+                //send immediatly a feedback to the incoming connection  
+
+                let gameClass = new Game()
+                let game = gameClass.load(localStorage);
+                wss.clients.forEach(c => {
+                    if (c != ws) {
+                        c.send(JSON.stringify(game)); 
+                    }    
+                }); 
+            });
+        })
 
         /**
          * Listen on provided port, on all network interfaces.
@@ -80,8 +102,6 @@ class Server {
 
 
     }
-
-
 }
 
 Server.bootstrap();

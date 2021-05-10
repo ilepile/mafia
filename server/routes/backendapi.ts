@@ -18,7 +18,7 @@ export class BackendApi {
 
       let localStorage: LocalStorage = new LocalStorage('../');
       let gameClass = new Game()
-      let game = gameClass.load(localStorage);;
+      let game = gameClass.load(localStorage);
       gameClass.creteUser(user, game);
       gameClass.save(game, localStorage)
       res.json(game)
